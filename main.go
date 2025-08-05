@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -53,12 +54,35 @@ func archiveIt(source, target string) error {
 			return nil
 		}
 
-		return nil
+		file, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+		_, err = io.Copy(writer, file)
+		return err
 	})
+	if err != nil {
+		return err
+	}
 
+	if err := archive.Flush(); err != nil {
+		return err
+	}
 	return nil
 }
 
 func main() {
-	fmt.Println("WIP")
+	if len(os.Args) != 3 {
+		fmt.Println("Expecting source and target")
+		return
+	}
+
+	source := os.Args[1]
+	target := os.Args[2]
+
+	err := archiveIt(source, target)
+	if err != nil {
+		fmt.Println("Something went wrong: ", err)
+	}
 }
