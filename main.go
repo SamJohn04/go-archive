@@ -73,6 +73,8 @@ func archiveIt(source, target string) error {
 }
 
 func main() {
+	var c rune
+
 	if len(os.Args) != 3 {
 		fmt.Println("Expecting source and target")
 		return
@@ -83,6 +85,23 @@ func main() {
 
 	err := archiveIt(source, target)
 	if err != nil {
-		fmt.Println("Something went wrong: ", err)
+		fmt.Println("Something went wrong:", err)
+		return
+	}
+
+	fmt.Printf("Delete %v? (y|N) ", source)
+	_, err = fmt.Scanf("%c", &c)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	if c != 'y' {
+		return
+	}
+
+	err = os.RemoveAll(source)
+	if err != nil {
+		fmt.Printf("Error while deleting %v: %v\n", source, err)
 	}
 }
