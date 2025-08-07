@@ -75,21 +75,19 @@ func archiveIt(source, target string) error {
 func main() {
 	var c rune
 
-	if len(os.Args) != 3 {
-		fmt.Println("Expecting source and target")
+	result, err := parse(os.Args[1:])
+	if err != nil {
+		fmt.Println("Error while parsing the input:", err)
 		return
 	}
 
-	source := os.Args[1]
-	target := os.Args[2]
-
-	err := archiveIt(source, target)
+	err = archiveIt(result.source, result.destination)
 	if err != nil {
 		fmt.Println("Something went wrong:", err)
 		return
 	}
 
-	fmt.Printf("Delete %v? (y|N) ", source)
+	fmt.Printf("Delete %v? (y|N) ", result.source)
 	_, err = fmt.Scanf("%c", &c)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -100,8 +98,8 @@ func main() {
 		return
 	}
 
-	err = os.RemoveAll(source)
+	err = os.RemoveAll(result.source)
 	if err != nil {
-		fmt.Printf("Error while deleting %v: %v\n", source, err)
+		fmt.Printf("Error while deleting %v: %v\n", result.source, err)
 	}
 }
