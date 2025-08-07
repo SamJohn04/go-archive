@@ -24,8 +24,6 @@ func archiveIt(source, target string) error {
 	archive := zip.NewWriter(zipFile)
 	defer archive.Close()
 
-	base := filepath.Base(source)
-
 	err = filepath.Walk(source, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -42,7 +40,7 @@ func archiveIt(source, target string) error {
 		if err != nil {
 			return err
 		}
-		header.Name = path[len(base)+1:]
+		header.Name = path[len(source)+1:]
 		header.Method = zip.Deflate
 
 		writer, err := archive.CreateHeader(header)
