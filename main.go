@@ -71,9 +71,7 @@ func archiveIt(source, target string) error {
 }
 
 func main() {
-	var c rune
-
-	result, err := parse(os.Args[1:])
+	result, err := parse()
 	if err != nil {
 		fmt.Println("Error while parsing the input:", err)
 		return
@@ -85,14 +83,7 @@ func main() {
 		return
 	}
 
-	fmt.Printf("Delete %v? (y|N) ", result.source)
-	_, err = fmt.Scanf("%c", &c)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	if c != 'y' {
+	if !result.deleteOriginal {
 		return
 	}
 
