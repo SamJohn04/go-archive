@@ -13,8 +13,11 @@ import (
 )
 
 func archiveIt(source, target string) error {
+	if _, err := os.Stat(source); errors.Is(err, os.ErrNotExist) {
+		return errors.New("source file does not exist")
+	}
 	if _, err := os.Stat(target); !errors.Is(err, os.ErrNotExist) {
-		return errors.New("file already exists")
+		return errors.New("zip file already exists")
 	}
 
 	zipFile, err := os.Create(target)
