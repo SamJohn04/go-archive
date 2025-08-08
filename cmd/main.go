@@ -8,6 +8,8 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+
+	"github.com/SamJohn04/go-archive/internal"
 )
 
 func archiveIt(source, target string) error {
@@ -71,7 +73,7 @@ func archiveIt(source, target string) error {
 }
 
 func main() {
-	result, err := Parse()
+	result, err := internal.Parse()
 	if err != nil {
 		fmt.Println("Error while parsing the input:", err)
 		return
