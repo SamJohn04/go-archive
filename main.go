@@ -71,24 +71,24 @@ func archiveIt(source, target string) error {
 }
 
 func main() {
-	result, err := parse()
+	result, err := Parse()
 	if err != nil {
 		fmt.Println("Error while parsing the input:", err)
 		return
 	}
 
-	err = archiveIt(result.source, result.destination)
+	err = archiveIt(result.Source, result.Destination)
 	if err != nil {
 		fmt.Println("Something went wrong:", err)
 		return
 	}
 
-	if !result.deleteOriginal {
+	if !result.DeleteOriginal {
 		return
 	}
 
-	err = os.RemoveAll(result.source)
+	err = os.RemoveAll(result.Source)
 	if err != nil {
-		fmt.Printf("Error while deleting %v: %v\n", result.source, err)
+		fmt.Printf("Error while deleting %v: %v\n", result.Source, err)
 	}
 }

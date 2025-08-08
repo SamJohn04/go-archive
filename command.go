@@ -7,13 +7,13 @@ import (
 	"path/filepath"
 )
 
-type argument struct {
-	source         string
-	destination    string
-	deleteOriginal bool
+type Argument struct {
+	Source         string
+	Destination    string
+	DeleteOriginal bool
 }
 
-func parse() (argument, error) {
+func Parse() (Argument, error) {
 	var source, destination string
 	var deleteOriginal bool
 
@@ -23,12 +23,12 @@ func parse() (argument, error) {
 	flag.Parse()
 
 	if len(flag.Args()) < 1 {
-		return argument{}, errors.New("no source string")
+		return Argument{}, errors.New("no source string")
 	}
 
 	source, err := filepath.Abs(flag.Arg(0))
 	if err != nil {
-		return argument{}, fmt.Errorf("while parsing the source string: %w", err)
+		return Argument{}, fmt.Errorf("while parsing the source string: %w", err)
 	}
 
 	if len(destination) == 0 {
@@ -36,13 +36,13 @@ func parse() (argument, error) {
 	} else {
 		destination, err = filepath.Abs(destination)
 		if err != nil {
-			return argument{}, fmt.Errorf("while parsing the destination string: %w", err)
+			return Argument{}, fmt.Errorf("while parsing the destination string: %w", err)
 		}
 	}
 
-	return argument{
-		source:         source,
-		destination:    destination,
-		deleteOriginal: deleteOriginal,
+	return Argument{
+		Source:         source,
+		Destination:    destination,
+		DeleteOriginal: deleteOriginal,
 	}, nil
 }
