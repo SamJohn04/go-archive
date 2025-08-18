@@ -13,20 +13,23 @@ type Argument struct {
 	DeleteOriginal bool
 }
 
-func Parse() (Argument, error) {
+func Parse(arguments []string) (Argument, error) {
 	var source, destination string
 	var deleteOriginal bool
 
-	flag.BoolVar(&deleteOriginal, "d", false, "delete the original folder after archive")
-	flag.StringVar(&destination, "o", "", "the output file (add a .zip to folder by default)")
+	flag.CommandLine.BoolVar(&deleteOriginal, "d", false, "delete the original folder after archive")
+	flag.CommandLine.StringVar(&destination, "o", "", "the output file (add a .zip to folder by default)")
 
-	flag.Parse()
+	err := flag.CommandLine.Parse(arguments)
+	if err != nil {
+		return Argument{}, err
+	}
 
 	if len(flag.Args()) < 1 {
 		return Argument{}, errors.New("no source string")
 	}
 
-	source, err := filepath.Abs(flag.Arg(0))
+	source, err = filepath.Abs(flag.Arg(0))
 	if err != nil {
 		return Argument{}, fmt.Errorf("while parsing the source string: %w", err)
 	}

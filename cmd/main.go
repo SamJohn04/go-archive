@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	result, err := internal.Parse()
+	result, err := internal.Parse(os.Args[1:])
 	if err != nil {
 		fmt.Println("Error while parsing the input:", err)
 		return
