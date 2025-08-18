@@ -2,6 +2,13 @@
 
 Archive your files on the Go.
 
+## Initialization
+
+Use `go build -o archive cmd/main.go` to create archive.  
+Once created, move it to a directory that is accessible from the whole system.  
+
+On the other hand, you can also use `go run cmd/main.go ...`.
+
 ## Flags
 
 Use `-d` flag for deleting the original file.  
