@@ -13,12 +13,11 @@ type Argument struct {
 	DeleteOriginal bool
 }
 
-func Parse(arguments []string) (Argument, error) {
-	var source, destination string
-	var deleteOriginal bool
+var deleteOriginal = flag.CommandLine.Bool("d", false, "delete the original folder after archive")
+var destination = flag.CommandLine.String("o", "", "the output file (adds a .zip to source by default)")
 
-	flag.CommandLine.BoolVar(&deleteOriginal, "d", false, "delete the original folder after archive")
-	flag.CommandLine.StringVar(&destination, "o", "", "the output file (add a .zip to folder by default)")
+func Parse(arguments []string) (Argument, error) {
+	var source string
 
 	err := flag.CommandLine.Parse(arguments)
 	if err != nil {
@@ -34,10 +33,10 @@ func Parse(arguments []string) (Argument, error) {
 		return Argument{}, fmt.Errorf("while parsing the source string: %w", err)
 	}
 
-	if len(destination) == 0 {
-		destination = source + ".zip"
+	if len(*destination) == 0 {
+		*destination = source + ".zip"
 	} else {
-		destination, err = filepath.Abs(destination)
+		*destination, err = filepath.Abs(*destination)
 		if err != nil {
 			return Argument{}, fmt.Errorf("while parsing the destination string: %w", err)
 		}
@@ -45,7 +44,7 @@ func Parse(arguments []string) (Argument, error) {
 
 	return Argument{
 		Source:         source,
-		Destination:    destination,
-		DeleteOriginal: deleteOriginal,
+		Destination:    *destination,
+		DeleteOriginal: *deleteOriginal,
 	}, nil
 }
