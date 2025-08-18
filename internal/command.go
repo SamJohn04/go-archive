@@ -21,15 +21,18 @@ func Parse(arguments []string) (Argument, error) {
 
 	err := flag.CommandLine.Parse(arguments)
 	if err != nil {
+		resetArgsToDefault()
 		return Argument{}, err
 	}
 
 	if len(flag.Args()) < 1 {
+		resetArgsToDefault()
 		return Argument{}, errors.New("no source string")
 	}
 
 	source, err = filepath.Abs(flag.Arg(0))
 	if err != nil {
+		resetArgsToDefault()
 		return Argument{}, fmt.Errorf("while parsing the source string: %w", err)
 	}
 
@@ -38,13 +41,21 @@ func Parse(arguments []string) (Argument, error) {
 	} else {
 		*destination, err = filepath.Abs(*destination)
 		if err != nil {
+			resetArgsToDefault()
 			return Argument{}, fmt.Errorf("while parsing the destination string: %w", err)
 		}
 	}
 
-	return Argument{
+	argument := Argument{
 		Source:         source,
 		Destination:    *destination,
 		DeleteOriginal: *deleteOriginal,
-	}, nil
+	}
+	resetArgsToDefault()
+	return argument, nil
+}
+
+func resetArgsToDefault() {
+	*deleteOriginal = false;
+	*destination = "";
 }
