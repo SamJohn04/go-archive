@@ -33,8 +33,8 @@ func main() {
 	}
 }
 
-func archiveIt(source, target string) error {
-	if _, err := os.Stat(target); !errors.Is(err, os.ErrNotExist) {
+func archiveIt(source, destination string) error {
+	if _, err := os.Stat(destination); !errors.Is(err, os.ErrNotExist) {
 		return errors.New("zip file already exists")
 	}
 	srcStat, err := os.Stat(source)
@@ -44,7 +44,7 @@ func archiveIt(source, target string) error {
 		return fmt.Errorf("something went wrong while accessing file: %w", err)
 	}
 
-	zipFile, err := os.Create(target)
+	zipFile, err := os.Create(destination)
 	if err != nil {
 		return err
 	}
