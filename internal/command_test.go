@@ -27,6 +27,38 @@ func TestParse(t *testing.T) {
 				Destination: absolutePath("../b.zip"),
 				DeleteOriginal: false,
 			},
+		}, {
+			name: "Single complicated argument",
+			args: []string{"../a/b"},
+			expected: Argument{
+				Source: absolutePath("../a/b"),
+				Destination: absolutePath("../a/b.zip"),
+				DeleteOriginal: false,
+			},
+		}, {
+			name: "Single + Delete Original",
+			args: []string{"-d", "../a/b"},
+			expected: Argument{
+				Source: absolutePath("../a/b"),
+				Destination: absolutePath("../a/b.zip"),
+				DeleteOriginal: true,
+			},
+		}, {
+			name: "Source and Destination",
+			args: []string{"-o", "../c.zip", "../a/b"},
+			expected: Argument{
+				Source: absolutePath("../a/b"),
+				Destination: absolutePath("../c.zip"),
+				DeleteOriginal: false,
+			},
+		}, {
+			name: "Source and Destination + Delete Original",
+			args: []string{"-d", "-o", "../c.zip", "../a/b"},
+			expected: Argument{
+				Source: absolutePath("../a/b"),
+				Destination: absolutePath("../c.zip"),
+				DeleteOriginal: true,
+			},
 		},
 	}
 
