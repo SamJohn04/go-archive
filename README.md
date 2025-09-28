@@ -11,7 +11,7 @@ On the other hand, you can also use `go run cmd/main.go ...`.
 
 ## Flags
 
-Use `-d` flag for deleting the original file.  
+Use `-d` flag for deleting the original file after archiving.  
 Use `-o FILENAME` flag to deciding the output file. By default, it has the same name as the parent, with .zip at the end.
 
 The `-d` and `-o` tags are optional, but must be given before the source file.  
